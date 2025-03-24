@@ -1,0 +1,47 @@
+# initialize ros2
+source /opt/ros/humble/setup.bash
+
+# create package
+ros2 pkg create --build-type ament_python py_srvcli --dependencies rclpy example_interfaces
+
+# update package.xml
+<description>Python client server tutorial</description>
+<maintainer>email="you@email.com">YourName </maintainer>
+<license>Apache License 2.0 </license>
+
+# update setup.py
+maintainer='Your Name',
+maintainer_email='you@email.com',
+description='Python client server tutorial',
+license='Apache License 2.0',
+
+
+
+cd ros2_ws/src/py_srvcli/pysrvcli
+
+touch service_member_function.py
+
+touch client_member_function.py
+
+goto setup.py (cd back)
+
+entry_points = {
+    'console_scripts' : [
+        'service = py_srvcli.service_member_function:main',
+        'client = py_srvcli.client_member_function:main',
+    ]
+}
+
+
+(ros2_ws)
+rosdep install -i --from-path src --rosdistro foxy -y
+
+colcon build --packages-select py_srvcli
+
+
+source install/setup.bash
+
+ros2 run py_srvcli service
+
+ros2 run py_srvcli client 2 3
+
